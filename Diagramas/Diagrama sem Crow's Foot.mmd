@@ -1,0 +1,20 @@
+---
+title: Diagrama ER com Notação Pé de Galinha (Crow's Foot) sem atributos
+---
+erDiagram
+    SILO ||--|{ SENSOR : possui
+    SILO ||--|{ ATUADOR : controla
+    SILO ||--|{ ALERTA : gera
+    SILO }|--|| LIMITE : utiliza
+
+    SENSOR ||--|{ MEDICAO : registra
+
+    USUARIO ||--|{ ALERTA : recebe
+    USUARIO ||--|{ RELATORIO : gera
+    USUARIO ||--|{ LOG : executa
+    USUARIO ||--|{ CONFIG_NOTIFICACAO : configura
+
+
+%% Lucas Guilherme
+%% Diagrama Crow's Foot sem os atributos
+%%=========================================================
