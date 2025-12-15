@@ -1,0 +1,103 @@
+---
+title: Diagrama ER com Notação Pé de Galinha (Crow's Foot) com atributos
+---
+
+erDiagram 
+    SILO {
+        int silo_id PK
+        string nome
+        string localizacao
+        decimal capacidade
+        int tipo_grao_id FK
+        string modo_operacao
+        decimal temp_limite_superior
+        decimal temp_limite_inferior
+    }
+    
+    SENSOR {
+        int sensor_id PK
+        int silo_id FK
+        string tipo
+        decimal faixa_min
+        decimal faixa_max
+        string status
+        decimal fator_calibracao
+        datetime data_ultima_calibracao
+    }
+    
+    MEDICAO {
+        int medicao_id PK
+        int sensor_id FK
+        decimal valor
+        datetime timestamp
+    }
+    
+    ATUADOR {
+        int atuador_id PK
+        int silo_id FK
+        string tipo
+        string estado
+        string endereco_modbus
+    }
+    
+    USUARIO {
+        int usuario_id PK
+        string nome
+        string email
+        string perfil
+        string senha_hash
+        boolean ativo
+    }
+    
+    LIMITE {
+        int limite_id PK
+        string tipo_grao
+        decimal limite_temperatura
+        decimal limite_umidade
+    }
+    
+    ALERTA {
+        int alerta_id PK
+        int silo_id FK
+        string tipo
+        decimal valor_medido
+        datetime timestamp
+        string status
+        int usuario_notificado_id FK
+    }
+    
+    RELATORIO {
+        int relatorio_id PK
+        string tipo
+        datetime periodo_inicio
+        datetime periodo_fim
+        string arquivo_path
+        int usuario_gerador_id FK
+        datetime timestamp
+    }
+    
+    LOG {
+        int log_id PK
+        int usuario_id FK
+        string acao
+        datetime timestamp
+        string detalhes
+    }
+    
+    CONFIGURACAO_NOTIFICACAO {
+        int config_id PK
+        int usuario_id FK
+        string canal
+        boolean habilitado
+    }
+
+    SILO ||--o{ SENSOR : "possui"
+    SILO ||--o{ ATUADOR : "controla"
+    SILO ||--o{ ALERTA : "gera"
+    SILO }o--|| LIMITE : "utiliza"
+    SENSOR ||--o{ MEDICAO : "registra"
+    USUARIO ||--o{ ALERTA : "é_notificado_por"
+    USUARIO ||--o{ RELATORIO : "gera"
+    USUARIO ||--o{ LOG : "registra"
+    USUARIO ||--o{ CONFIGURACAO_NOTIFICACAO : "configura"
+    LIMITE }|--|| SILO : "aplica-se_a"
