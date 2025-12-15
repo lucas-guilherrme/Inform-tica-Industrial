@@ -1,0 +1,142 @@
+---
+title: Diagrama MER com os atributos
+---
+
+flowchart LR
+
+    %% --- Entidades fortes ---
+    E_SILO[SILO]:::entidade
+    E_LIMITE[LIMITE]:::entidade
+    E_USUARIO[USUARIO]:::entidade
+
+    %% --- Entidades fracas ---
+    E_SENSOR[[SENSOR]]:::entidade
+    E_MEDICAO[[MEDICAO]]:::entidade
+    E_ATUADOR[[ATUADOR]]:::entidade
+    E_ALERTA[[ALERTA]]:::entidade
+    E_RELATORIO[[RELATORIO]]:::entidade
+    E_LOG[[LOG]]:::entidade
+    E_CONFIG[[CONFIG_NOTIFICACAO]]:::entidade
+    
+    %% --- Relacionamentos ---
+    R_POSSUI{POSSUI}:::relacionamento
+    R_REGISTRA_MED{REGISTRA}:::relacionamento
+    R_CONTROLA{CONTROLA}:::relacionamento
+    R_GERA_ALERTA{GERA}:::relacionamento
+    R_UTILIZA{UTILIZA}:::relacionamento
+    R_RECEBE{NOTIFICA}:::relacionamento
+    R_GERA_REL{GERA}:::relacionamento
+    R_REGISTRA_LOG{REGISTRA}:::relacionamento
+    R_CONFIGURA{CONFIGURA}:::relacionamento
+    
+    %% --- Cardinalidade ---
+    %% Silo e seus componentes
+
+    %% Silo e seus periféricos
+    E_SILO ---|1| R_POSSUI ---|N| E_SENSOR
+    E_SILO ---|1| R_CONTROLA ---|N| E_ATUADOR
+    E_SILO ---|1| R_GERA_ALERTA ---|N| E_ALERTA
+    E_SILO ---|N| R_UTILIZA ---|1| E_LIMITE
+
+    %% Sensor e Medição
+    E_SENSOR ---|1| R_REGISTRA_MED ---|N| E_MEDICAO
+
+    %% Usuário e interações
+    E_USUARIO ---|1| R_RECEBE ---|N| E_ALERTA
+    E_USUARIO ---|1| R_GERA_REL ---|N| E_RELATORIO
+    E_USUARIO ---|1| R_REGISTRA_LOG ---|N| E_LOG
+    E_USUARIO ---|1| R_CONFIGURA ---|N| E_CONFIG
+
+    %% ==========================================
+    %% 4. ATRIBUTOS (ELIPSES)
+    %% ==========================================
+
+    %% Atributos SILO
+    A_SILO_1([<u>silo_id</u>]):::atributoPK
+    A_SILO_2([nome]):::atributo
+    A_SILO_3([localizacao]):::atributo
+    A_SILO_4([capacidade]):::atributo
+    E_SILO --- A_SILO_1 & A_SILO_2 & A_SILO_3 & A_SILO_4
+
+    L_SILO_CEP([CEP]):::atributo
+    L_SILO_NUM([Numero]):::atributo
+    L_SILO_CID([Cidade]):::atributo
+    L_SILO_BAI([Bairro]):::atributo
+    L_SILO_EST([Estado]):::atributo
+
+    A_SILO_3 --- L_SILO_CEP & L_SILO_NUM & L_SILO_CID & L_SILO_BAI & L_SILO_EST
+
+    %% Atributos SENSOR
+    A_SENS_1([<u>sensor_id</u>]):::atributoPK
+    A_SENS_2([tipo]):::atributo
+    A_SENS_3([status]):::atributo
+    E_SENSOR --- A_SENS_1 & A_SENS_2 & A_SENS_3
+
+    %% Atributos MEDICAO
+    A_MED_1([<u>medicao_id</u>]):::atributoPK
+    A_MED_2([valor]):::atributo
+    A_MED_3([timestamp]):::atributo
+    E_MEDICAO --- A_MED_1 & A_MED_2 & A_MED_3
+
+    %% Atributos ATUADOR
+    A_ATU_1([<u>atuador_id</u>]):::atributoPK
+    A_ATU_2([tipo]):::atributo
+    A_ATU_3([estado]):::atributo
+    E_ATUADOR --- A_ATU_1 & A_ATU_2 & A_ATU_3
+
+    %% Atributos USUARIO
+    A_USR_1([<u>usuario_id</u>]):::atributoPK
+    A_USR_2([nome]):::atributo
+    A_USR_3(email):::atributo
+    A_USR_4(perfil):::atributo
+    E_USUARIO --- A_USR_1 & A_USR_2 & A_USR_3 & A_USR_4
+
+    A_USR_FN([primeiro nome]):::atributo
+    A_USR_SN([segundo nome]):::atributo
+    A_USR_LN([utimo nome]):::atributo
+    A_USR_2 ---A_USR_FN & A_USR_SN & A_USR_LN
+
+    %% Atributos LIMITE
+    A_LIM_1([<u>limite_id</u>]):::atributoPK
+    A_LIM_2([tipo_grao]):::atributo
+    A_LIM_3([limites_temp]):::atributo
+    A_LIM_4([limites_umid]):::atributo
+    E_LIMITE --- A_LIM_1 & A_LIM_2 & A_LIM_3 & A_LIM_4
+
+    %% Atributos ALERTA
+    A_ALE_1([<u>alerta_id</u>]):::atributoPK
+    A_ALE_2([tipo]):::atributo
+    A_ALE_3([status]):::atributo
+    E_ALERTA --- A_ALE_1 & A_ALE_2 & A_ALE_3
+
+    %% Atributos RELATORIO
+    A_REL_1([<u>relatorio_id</u>]):::atributoPK
+    A_REL_2([tipo]):::atributo
+    A_REL_3([arquivo]):::atributo
+    E_RELATORIO --- A_REL_1 & A_REL_2 & A_REL_3
+
+    %% Atributos LOG
+    A_LOG_1([<u>log_id</u>]):::atributoPK
+    A_LOG_2([acao]):::atributo
+    A_LOG_3([timestamp]):::atributo
+    E_LOG --- A_LOG_1 & A_LOG_2 & A_LOG_3
+
+    %% Atributos CONFIG
+    A_CFG_1([<u>config_id</u>]):::atributoPK
+    A_CFG_2([canal]):::atributo
+    A_CFG_3([habilitado]):::atributo
+    E_CONFIG --- A_CFG_1 & A_CFG_2 & A_CFG_3
+
+    %% Estilos
+    %% --- Entidades forte ---
+    style E_SILO color:#FFFFFF, stroke:#2962FF, fill:#2962FF
+    style E_USUARIO color:#FFFFFF, stroke:#2962FF, fill:#2962FF
+    style E_LIMITE color:#FFFFFF, stroke:#2962FF, fill:#2962FF
+
+    %% --- Entidades fracas ---
+    style E_ALERTA color:#FFFFFF, stroke:#CD5C5C, fill:#FF6347
+
+%% Lucas Guilherme
+%% Diagrama MER com os atributos
+%%=========================================================
+    
