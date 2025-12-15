@@ -1,0 +1,61 @@
+---
+title: Diagrama MER sem os atributos
+---
+
+flowchart LR
+    %% --- Entidades fortes ---
+    SILO[SILO]
+    LIMITE[LIMITE]
+    USUARIO[USUÁRIO]
+    
+    %% --- Entidades fracas ---
+    SENSOR[[SENSOR]]
+    MEDICAO[[MEDIÇÃO]]
+    ATUADOR[[ATUADOR]]
+    ALERTA[[ALERTA]]
+    RELATORIO[[RELATÓRIO]]
+    LOG[[LOG]]
+    CONFIG[[CONFIGURACAO_NOTIFICACAO ]]
+
+    %% --- Relacionamentos ---
+    R1{POSSUI}
+    R2{REGISTRA}
+    R3{CONTROLA}
+    R4{GERA}
+    R5{UTILIZA}
+    R6{NOTIFICA}
+    R7{GERA}
+    R8{REGISTRA}
+    R9{CONFIGURA}
+
+    %% --- Cardinalidade ---
+    %% Silo e seus componentes
+    SILO    ---|1| R1 ---|N| SENSOR
+    SILO    ---|1| R3 ---|N| ATUADOR
+    SILO    ---|1| R4 ---|N| ALERTA
+    SILO    ---|N| R5 ---|1| LIMITE 
+
+    %% OBS: Ver com alexandre se varios silos vai  ter o mesmo limite
+
+    %% Sensor gera medição
+    SENSOR  ---|1| R2 ---|N| MEDICAO
+
+    %% Usuário e suas interações
+    USUARIO ---|1| R6 ---|N| ALERTA
+    USUARIO ---|1| R7 ---|N| RELATORIO
+    USUARIO ---|1| R8 ---|N| LOG
+    USUARIO ---|1| R9 ---|N| CONFIG
+
+    %% Estilos
+    %% --- Entidades forte ---
+    style SILO color:#FFFFFF, stroke:#2962FF, fill:#2962FF
+    style USUARIO color:#FFFFFF, stroke:#2962FF, fill:#2962FF
+    style LIMITE color:#FFFFFF, stroke:#2962FF, fill:#2962FF
+
+    %% --- Entidades fracas ---
+    style ALERTA color:#FFFFFF, stroke:#CD5C5C, fill:#FF6347
+    
+    
+%% Lucas Guilherme
+%% Diagrama MER sem os atributos
+%%=========================================================
